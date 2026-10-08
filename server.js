@@ -13,6 +13,18 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Root health check endpoint
+app.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    message: 'Sleep Disorder Backend API is running!',
+    endpoints: {
+      health: '/api/health',
+      predict: '/api/predict'
+    }
+  });
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
@@ -81,10 +93,10 @@ app.post('/api/predict', (req, res) => {
   });
 });
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`=================================================`);
   console.log(`Node.js Express Backend is running on port ${PORT}`);
-  console.log(`Health check: http://localhost:${PORT}/api/health`);
+  console.log(`Health check: http://0.0.0.0:${PORT}/api/health`);
   console.log(`ML Inference: Python LightGBM (sleep_disorder_lightgbm_model.joblib)`);
   console.log(`=================================================`);
 });
